@@ -16,13 +16,59 @@
     <div class="edit">
 <pre id="editor">
 function tick(p) {
-  if (p.distance() === 0)
-    return;
+  var init = function init(state) {
+    if(state.pre) {
+      return;
+    }
+    state.pre = {};
 
-  var options = ['up', 'down', 'left', 'right'];
-  var random = options[Math.floor(Math.random() * options.length)];
-  p.move(random);
+    state.pre.h = {};
+    state.pre.h.previousDistance = 99999;
+    state.pre.h.directions = ['left', 'right'];
+    state.pre.h.currDirection = 0;
+
+    state.pre.v = {};
+    state.pre.v.previousDistance = 99999;
+    state.pre.v.directions = ['up', 'down'];
+    state.pre.v.currDirection = 0;
+
+    state.pre.horz = true;
+    state.pre.moveCounter = 0;
+  };
+
+  var moveAndCalculate = function moveAndCalculate(p, dir) {
+    p.move(dir);
+    return p.distance();
+  };
+
+  var move = function move(p, state) {
+    var currCommand = state.directions[state.currDirection];
+    var newDistance = moveAndCalculate(p, currCommand);
+    if( newDistance > state.previousDistance ) {
+      state.currDirection = ++state.currDirection % 2;
+      console.log('New direction: ' + state.currDirection);
+    }
+    state.previousDistance = newDistance;
+  };
+
+  var myTick = function(p, state) {
+    if( 0 === p.distance() ) {
+      return;
+    }
+    if( state.horz ) {
+      move(p, state.h);
+    } else {
+      move(p, state.v);
+    }
+    if( 0 === ++state.moveCounter % 3 ) {
+        state.horz = !state.horz;
+    }
+  };
+  
+  init(p);
+  myTick(p, p.pre);
 }
+
 </pre>
     </div>
     <script src="lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
