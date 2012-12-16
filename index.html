@@ -8,13 +8,13 @@
   <body>
     <a href="https://github.com/donbonifacio/the-blind-prophet"><img style="position:absolute;top:0;right:0;border:0;" width="149" height="149" src="forkme.png" alt="Fork me on GitHub"></a>
     <p>The prophet is lost in his way to the target.</p>
-    <div id="viewer"></div>
     <p>He can only <code>move('up')</code>, <code>move('down')</code>, <code>move('left')</code>, <code>move('right')</code> or get the <code>distance()</code> to its target.</p>
     <p>Help him find his way quicker, by hacking <code>tick()</code>
     <button onclick="go()">Okay, Go!</button>
     <button onclick="reset()">Reset</button></p>
-    <div class="edit">
-<pre id="editor">
+    <div id="viewer" style='float:left;margin-right:50px;'></div>
+    <div class="edit" style='float:left'>
+<pre id="editor" style='height:600px'>
 function tick(p) {
   var init = function init(state) {
     if(state.pre) {
@@ -79,7 +79,7 @@ function tick(p) {
     <script type="text/javascript">
 
 var model = new Model(100);
-var viewer = new Viewer(model, 600, 375);
+var viewer = new Viewer(model, 600, 600);
 
 var controller = model.getController();
 
